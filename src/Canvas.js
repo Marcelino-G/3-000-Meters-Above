@@ -8,18 +8,11 @@ function Canvas() {
     let canvasContext;
     let myPlayer;
     let enemy;
-    const [enemies, setEnemies] = useState('sa');
 
     useEffect(() => {
-        myPlayer = new Player(10,120,30,30)
-        enemy = new Player(0,0,30,30)
-        enemy.x = Math.floor(Math.random() * 400)
         myGameArea.start();
-        
+        myGameArea.updatingGame();
     },[])
-
-    // setEnemies("pa")
-    // console.log(enemies)
 
     class Player {
         constructor(x, y, width, height){
@@ -40,7 +33,6 @@ function Canvas() {
         }
 
         updatePosition(){
-
             if(this.x <= 5){
                 this.x += 2;
                 return
@@ -54,14 +46,11 @@ function Canvas() {
                 this.y -= 2;
                 return
             }
-
             this.x += this.vxr;
             this.x += this.vxl;
             this.y += this.vyu;
             this.y += this.vyd;
         }
-
-        
 
         enemyPosition(){
             this.y += .1;
@@ -88,13 +77,17 @@ function Canvas() {
                 alert("bye")
                 return true;
             } 
-            
         }
     }
 
     const myGameArea = {
         start: function() {
             canvasContext = canvasRef.current.getContext("2d");
+            myPlayer = new Player(10,120,30,30)
+            enemy = new Player(0,0,30,30)
+            enemy.x = Math.floor(Math.random() * 400)
+        },
+        updatingGame: function(){
             updateGameArea();
         },
         clearCanvas: function(){
@@ -121,13 +114,13 @@ function Canvas() {
 
     }
 
-    window.addEventListener("keydown", (e) => {
+    document.addEventListener("keydown", (e) => {
         if (e.key === "d"){
             myPlayer.vxr = 1.75;
-            console.log(enemy)
         }
         if(e.key === "a"){
             myPlayer.vxl = -1.75;
+            
         }
         if (e.key === "w"){
             myPlayer.vyu = -1.75;
@@ -151,13 +144,13 @@ function Canvas() {
             myPlayer.vyd = 0;
         }
     })
-
     return (
         <div>
             <canvas width={480} height={270} ref={canvasRef}>
             </canvas>
         </div>
     );
+    
 }
 
 export default Canvas;

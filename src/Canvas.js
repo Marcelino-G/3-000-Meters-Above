@@ -4,16 +4,6 @@ import React from "react";
 
 function Canvas() {
 
-    const canvasRef = useRef();
-    let canvasContext;
-    let myPlayer;
-    let enemy;
-
-    useEffect(() => {
-        myGameArea.start();
-        myGameArea.updatingGame();
-    },[])
-
     class Player {
         constructor(x, y, width, height){
             this.x = x;
@@ -52,43 +42,74 @@ function Canvas() {
             this.y += this.vyd;
         }
 
-        enemyPosition(){
-            this.y += .1;
+        enemyPosition(x){
+            this.y += x;
         }
 
         crash(enemy){
             //bottom right
             if(this.x > enemy.x && this.x < enemy.x + 30 && this.y > enemy.y && this.y < enemy.y + 30){
                 alert("bye")
+                console.log(en)
+                console.log(myPlayer)
                 return true;
             } 
             //top left
             if(this.x < enemy.x && this.x > enemy.x - 30 && this.y < enemy.y && this.y > enemy.y - 30){
                 alert("bye")
+                console.log(en)
+                console.log(myPlayer)
                 return true;
             } 
             //top right
             if(this.x > enemy.x && this.x < enemy.x + 30 && this.y < enemy.y && this.y > enemy.y - 30){
                 alert("bye")
+                console.log(en)
+                console.log(myPlayer)
                 return true;
             } 
             //bottom left
             if(this.x < enemy.x && this.x > enemy.x - 30 && this.y > enemy.y && this.y < enemy.y + 30){
                 alert("bye")
+                console.log(en)
+                console.log(myPlayer)
                 return true;
             } 
         }
     }
 
+    const canvasRef = useRef();
+    let canvasContext;
+    let myPlayer;
+    let enemy;
+    const [en, setEn] = useState([new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30)]);
+
+    useEffect(() => {
+        myGameArea.start();
+        myGameArea.updatingGame();
+    },[en])
+
+    
+
+    
+
     const myGameArea = {
         start: function() {
             canvasContext = canvasRef.current.getContext("2d");
             myPlayer = new Player(10,120,30,30)
-            enemy = new Player(0,0,30,30)
-            enemy.x = Math.floor(Math.random() * 400)
+            // enemy = new Player(0,0,30,30)
+            // enemy.x = Math.floor(Math.random() * 400)
+            // en.x= Math.floor(Math.random() * 400)
         },
         updatingGame: function(){
+            
+            for(let i =0; i < en.length; i++){
+            
+                en[i].x= Math.floor(Math.random() * 360)
+                en[i].y= Math.floor(Math.random() * 25)
+            }
             updateGameArea();
+            
         },
         clearCanvas: function(){
             canvasContext.clearRect(0,0,canvasRef.current.width,canvasRef.current.height);
@@ -98,27 +119,37 @@ function Canvas() {
     const updateGameArea = () => {
         myGameArea.clearCanvas();
         myPlayer.updatePosition();
-        enemy.enemyPosition();
+        // en[0].enemyPosition();
 
         
 
         myPlayer.draw("yellow", canvasContext);
-        enemy.draw('red',canvasContext)
+        // en[0].draw('red',canvasContext)
+
+        for(let i =0; i < en.length; i++){
+            
+            en[i].enemyPosition(Math.floor(Math.random() * 1.5));
+            en[i].draw('red',canvasContext)
+
+            if(myPlayer.crash(en[i])){
+                cancelAnimationFrame(req)
+            }
+        }
 
 
         let req = requestAnimationFrame(updateGameArea)
 
-        if(myPlayer.crash(enemy)){
-            cancelAnimationFrame(req)
-        }
+        
 
     }
 
     document.addEventListener("keydown", (e) => {
         if (e.key === "d"){
             myPlayer.vxr = 1.75;
+            
         }
         if(e.key === "a"){
+            console.log(en)
             myPlayer.vxl = -1.75;
             
         }
@@ -144,10 +175,18 @@ function Canvas() {
             myPlayer.vyd = 0;
         }
     })
+
+    const addEn = () => {
+        setEn((prev) => [
+            ...prev, new Player(0,0,30,30)
+        ])
+    }
+
     return (
         <div>
             <canvas width={480} height={270} ref={canvasRef}>
             </canvas>
+            <button onClick={addEn} ></button>
         </div>
     );
     

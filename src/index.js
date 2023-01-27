@@ -5,13 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss"
-import Canvas from './Canvas';
+import BattlefielCanvas from './BattlefieldCanvas';
+import DialogueCanvas from "./DialogueCanvas"
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
-    <Canvas/>
+    <DialogueCanvas/>
+    {/* <App />
+    <BattlefielCanvas/> */}
   </React.StrictMode>
 );
 

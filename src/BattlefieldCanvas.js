@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react"
 import { useState } from "react"
 import React from "react";
 
-function Canvas() {
+function BattlefielCanvas() {
 
     class Player {
         constructor(x, y, width, height){
@@ -50,39 +50,43 @@ function Canvas() {
             //bottom right
             if(this.x > enemy.x && this.x < enemy.x + 30 && this.y > enemy.y && this.y < enemy.y + 30){
                 alert("bye")
-                console.log(en)
+                
                 console.log(myPlayer)
                 return true;
             } 
             //top left
             if(this.x < enemy.x && this.x > enemy.x - 30 && this.y < enemy.y && this.y > enemy.y - 30){
                 alert("bye")
-                console.log(en)
+                
                 console.log(myPlayer)
                 return true;
             } 
             //top right
             if(this.x > enemy.x && this.x < enemy.x + 30 && this.y < enemy.y && this.y > enemy.y - 30){
                 alert("bye")
-                console.log(en)
+                
                 console.log(myPlayer)
                 return true;
             } 
             //bottom left
             if(this.x < enemy.x && this.x > enemy.x - 30 && this.y > enemy.y && this.y < enemy.y + 30){
                 alert("bye")
-                console.log(en)
+                
                 console.log(myPlayer)
                 return true;
             } 
         }
     }
 
+
+
     const canvasRef = useRef();
     let canvasContext;
     let myPlayer;
-    let enemy;
-    const [en, setEn] = useState([new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30)]);
+    let level = 2;
+    // let enemy;
+    // const [en, setEn] = useState([new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30)]);
+    const [en, setEn] = useState([new Player(Math.floor(Math.random() * 400),0,40,40)]);
 
     useEffect(() => {
         myGameArea.start();
@@ -90,6 +94,16 @@ function Canvas() {
     },[en])
 
     
+    const addingEnemy = () => {
+        for(let i = 0; i < level; i++){
+            setEn((prev) => [
+                ...prev, new Player(Math.floor(Math.random() * 400),0,50,40)
+            ])
+        }
+        // for(let i = 0; i < en.length; i++){
+        //     en[i].x = Math.floor(Math.random() * 400)
+        // }
+    }
 
     
 
@@ -101,13 +115,21 @@ function Canvas() {
             // enemy.x = Math.floor(Math.random() * 400)
             // en.x= Math.floor(Math.random() * 400)
         },
+        addingEnemy: function(){
+            for(let i = 0; i < level; i++){
+                setEn((prev) => [
+                    ...prev, new Player(0,0,50,40)
+                ])
+            }
+        },
         updatingGame: function(){
             
-            for(let i =0; i < en.length; i++){
+            // for(let i =0; i < en.length; i++){
             
-                en[i].x= Math.floor(Math.random() * 360)
-                en[i].y= Math.floor(Math.random() * 25)
-            }
+            //     en[i].x= Math.floor(Math.random() * 360)
+            //     en[i].y= Math.floor(Math.random() * 25)
+            // }
+            
             updateGameArea();
             
         },
@@ -115,6 +137,8 @@ function Canvas() {
             canvasContext.clearRect(0,0,canvasRef.current.width,canvasRef.current.height);
         },
     }
+
+    
 
     const updateGameArea = () => {
         myGameArea.clearCanvas();
@@ -126,18 +150,23 @@ function Canvas() {
         myPlayer.draw("yellow", canvasContext);
         // en[0].draw('red',canvasContext)
 
+        let req = requestAnimationFrame(updateGameArea)
+
         for(let i =0; i < en.length; i++){
             
             en[i].enemyPosition(Math.floor(Math.random() * 1.5));
             en[i].draw('red',canvasContext)
+            
 
             if(myPlayer.crash(en[i])){
                 cancelAnimationFrame(req)
             }
         }
 
+        
 
-        let req = requestAnimationFrame(updateGameArea)
+
+        
 
         
 
@@ -149,7 +178,7 @@ function Canvas() {
             
         }
         if(e.key === "a"){
-            console.log(en)
+            // console.log(en)
             myPlayer.vxl = -1.75;
             
         }
@@ -176,21 +205,17 @@ function Canvas() {
         }
     })
 
-    const addEn = () => {
-        setEn((prev) => [
-            ...prev, new Player(0,0,30,30)
-        ])
-    }
+    
 
     return (
         <div>
             <canvas width={480} height={270} ref={canvasRef}>
             </canvas>
-            <button onClick={addEn} ></button>
+            <button onClick={addingEnemy}></button>
         </div>
     );
     
 }
 
-export default Canvas;
+export default BattlefielCanvas;
 

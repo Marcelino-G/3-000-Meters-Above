@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Children } from 'react';
 import ReactDOM from 'react-dom/client';
 // import './index.css';
 import App from './App';
@@ -7,13 +7,30 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss"
 import BattlefielCanvas from './BattlefieldCanvas';
 import DialogueCanvas from "./DialogueCanvas"
+import { createBrowserRouter,
+RouterProvider } from 'react-router-dom';
+
+const router = createBrowserRouter([
+
+  {
+    path: "/",
+    element: <DialogueCanvas/>
+  },
+  {
+    path: "s",
+    element: <App/>
+  }
+
+])
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <DialogueCanvas/>
+    {/* <DialogueCanvas/> */}
     {/* <App />
     <BattlefielCanvas/> */}
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 

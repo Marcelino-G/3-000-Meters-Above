@@ -1,140 +1,113 @@
 import { useEffect, useRef, useState } from "react";
+import { Outlet, Link } from "react-router-dom";
 
 function DialogueCanvas(){
 
-    const dialogue = useRef()
-    const nameForm = useRef()
+    const dialogueRef = useRef();
+    const nameFormRef = useRef();
+    const readyRef = useRef();
+    const continueRef = useRef();
+
 
     let [myName, setMyName] = useState("")
     const chapterOne = [
         "is anyone out there?",
         "yes! Help",
-        "whats your name?",
+        "what's your name?",
         `does this work ${myName}?`,
         "dont u worry",
-        "the saws are ontheir way"
+        "the saws are on their way",
+        "are you ready?"
     ]
 
-    let [pos, setPos] = useState(50)
+    let [pos, setPos] = useState(285)
     let [letter, setLetter] = useState(0)
     let [dialogueLine, setDialogueLine] = useState(0);
     let [currentDialogue, setCurrentDialogue] = useState(chapterOne[dialogueLine]);
     let [my, setMy] = useState(false)
-    
     
     let context;
     let req;
 
     useEffect(() => {
         
-        // context = dialogue.current.getContext('2d')
-        // updateLetter();
-        // updateLetter();
-        updating.start();
-        updating.letter();
+        updating.letters();
         if(currentDialogue === chapterOne[2]){
-            nameForm.current.style.display = "block"
+            nameFormRef.current.style.display = "flex"
+            continueRef.current.setAttribute("disabled", "")
+        }
+        if(currentDialogue === chapterOne[6]){
+            readyRef.current.removeAttribute("disabled")
+            continueRef.current.setAttribute("disabled", "")
         }
     },[my]);
 
     const updating = {
 
         start: function(){
-            return context = dialogue.current.getContext('2d')
+            return context = dialogueRef.current.getContext('2d')
         },
-
-        letter: function(){
+        letters: function(){
             context = updating.start()
             if(letter === currentDialogue.length){
                 setDialogueLine(dialogueLine+= 1)
                 setCurrentDialogue(chapterOne[dialogueLine])
                 setLetter(0);
-                setPos(50);
-                console.log("done")
+                setPos(275);
                 cancelAnimationFrame(req)
             } else{
-                context.fillText(currentDialogue[letter], pos, 50)
+                context.font = "25px serif"
+                context.fillText(currentDialogue[letter],pos, 225)
+                context.textAlign = "center"
                 setLetter(letter+= 1);
-                setPos(pos+=5);
-                console.log("working")
-                req = requestAnimationFrame(updating.letter)   
+                if(currentDialogue[letter] === " "){
+                    setPos(pos+= 10);
+                } else{
+                    setPos(pos+= 15);
+                }
+                
+                req = requestAnimationFrame(updating.letters)   
             }
     
              
         },
         nextLineClick: function(){
             context = updating.start()
-            context.clearRect(0,0,dialogue.current.width, dialogue.current.height)
+            context.clearRect(0,0,dialogueRef.current.width, dialogueRef.current.height)
             setMy(!my)
         }
-
-
-
-
     }
 
-    // const updateLetter = () => {
+    const form = {
 
-    //     if(letter === currentDialogue.length){
-    //         setDialogueLine(dialogueLine++)
-    //         cancelAnimationFrame(req)
-    //     }
+        nameOnChange: function(e){
+            setMyName(e.target.value)
+        },
+        nameSubmit: function(e){
+            e.preventDefault();
+            setCurrentDialogue(chapterOne[dialogueLine])
+            nameFormRef.current.style.display = "none"
+            updating.nextLineClick();
+            continueRef.current.removeAttribute("disabled")
+        }
+    }
 
-    //     context.fillText(currentDialogue[letter], pos, 50)
-    //     setLetter(letter++);
-    //     setPos(pos+=5);
-    //     let req = requestAnimationFrame(updateLetter)
-
+    return (<div id="dialogueHolder" className="row justify-content-end">
+                <canvas width={900} height={350}  ref={dialogueRef}></canvas>
+                
+                    
+                    <Link to={"s"}>
+                        <button ref={readyRef} className="col-2" disabled>ready!</button>
+                    </Link>
+                <button ref={continueRef} className="col-2" onClick={updating.nextLineClick}>continue</button>
+                <form ref={nameFormRef}>
+                    <label htmlFor="name">Name?</label>
+                    <input type="text" id="name" name="name" onChange={form.nameOnChange}></input>
+                    <input  type="submit" onClick={form.nameSubmit} ></input>
+                </form>
+                <Outlet/>
         
-
-    // }
-
-    
-
-
-    // const updateLetter = () => {
-
-    //     if(letter === currentDialogue.length){
-    //         cancelAnimationFrame(req)
-    //     }
-
-    //     // context.fillText(currentDialogue[letter], pos, 50)
-    //     // setLetter(letter++)
-    //     // setPos(pos+5)
-    //     let req = requestAnimationFrame(updateLetter)
-    //     console.log(currentDialogue[letter])
-
-        
-    // }
-
-    // const nextLine = () => {
-    //     // setDialogueLine(dialogueLine++)
-    //     // setCurrentDialogue(chapterOne[dialogueLine])
-    //     context.clearRect(0,0,dialogue.current.width, dialogue.current.height)
-    //     setCurrentDialogue(chapterOne[dialogueLine])
-    // }
-
-    const nameOnChange = (e) => {
-        setMyName(e.value)
-        console.log(myName)
-    }
-
-    const nameSubmit = (e) => {
-        e.preventDefault();
-        nameForm.current.style.display = "none"
-        updating.letter();
-        updating.nextLineClick();
-    }
-
-    return (<div>
-        <canvas width={200} height={200} ref={dialogue}></canvas>
-        <form ref={nameForm}>
-            <label htmlFor="name">Name?</label>
-            <input type="text" id="name" name="name" onChange={nameOnChange}></input>
-            <input type="submit" onClick={nameSubmit} ></input>
-        </form>
-        <button onClick={updating.nextLineClick}></button>
-    </div>)
+        </div>)
 }
 
 export default DialogueCanvas;

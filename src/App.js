@@ -1,5 +1,6 @@
 // import logo from './logo.svg';
 // import './App.css';
+import BattlefielCanvas from "./BattlefieldCanvas";
 
 
 
@@ -29,6 +30,7 @@ function App() {
           </ul>
         </section>
       </header>
+      <BattlefielCanvas/>
     </div>
   );
 }

@@ -26,8 +26,27 @@ header{
 
 canvas{
     background-color: pink;
+    margin: 0 auto;
 }
 
 form{
     display: none;
+    // display: flex;
+    flex-direction: column;
+    justify-self: end;
+    border: solid black 5px;
+    input{
+        width: 50%;
+        border: solid black 5px;
+    }
+    label{
+        border: solid black 5px;
+        width: 50%;
+    }
+    
+}
+
+#dialogueHolder{
+    border: solid black 5px;
+    
 }

@@ -25,22 +25,23 @@ header{
 }
 
 canvas{
-    background-color: pink;
+    // background-color: pink;
     margin: 0 auto;
 }
 
 form{
     display: none;
-    // display: flex;
+    text-align: center;
     flex-direction: column;
-    justify-self: end;
-    border: solid black 5px;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
     input{
         width: 50%;
-        border: solid black 5px;
+        
     }
     label{
-        border: solid black 5px;
+        
         width: 50%;
     }
     
@@ -48,5 +49,5 @@ form{
 
 #dialogueHolder{
     border: solid black 5px;
-    
+    background-color: lemonchiffon;
 }

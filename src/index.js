@@ -10,6 +10,7 @@ import DialogueCanvas from "./DialogueCanvas"
 import { createBrowserRouter,
 RouterProvider } from 'react-router-dom';
 
+
 const router = createBrowserRouter([
 
   {
@@ -18,9 +19,8 @@ const router = createBrowserRouter([
   },
   {
     path: "s",
-    element: <App/>
+    element: <App/>,
   }
-
 ])
 
 

@@ -1,8 +1,10 @@
 import { useEffect, useRef } from "react"
 import { useState } from "react"
 import React from "react";
+import { Link } from "react-router-dom";
+import DialogueCanvas from "./DialogueCanvas";
 
-function BattlefielCanvas() {
+function BattlefielCanvas(props) {
 
     class Player {
         constructor(x, y, width, height){
@@ -40,6 +42,13 @@ function BattlefielCanvas() {
             this.x += this.vxl;
             this.y += this.vyu;
             this.y += this.vyd;
+
+            if (this.y === 20){
+                return(
+                    <DialogueCanvas/>
+                )
+                
+            }
         }
 
         enemyPosition(x){
@@ -83,23 +92,22 @@ function BattlefielCanvas() {
     const canvasRef = useRef();
     let canvasContext;
     let myPlayer;
-    let level = 2;
-    // let enemy;
     // const [en, setEn] = useState([new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30)]);
-    const [en, setEn] = useState([new Player(Math.floor(Math.random() * 400),0,40,40)]);
+    // const [en, setEn] = useState([new Player(Math.floor(Math.random() * 400),0,40,40)]);
 
     useEffect(() => {
+        console.log(props.level)
         myGameArea.start();
         myGameArea.updatingGame();
-    },[en])
+    },[])
 
     
     const addingEnemy = () => {
-        for(let i = 0; i < level; i++){
-            setEn((prev) => [
-                ...prev, new Player(Math.floor(Math.random() * 400),0,50,40)
-            ])
-        }
+        // for(let i = 0; i < level; i++){
+        //     setEn((prev) => [
+        //         ...prev, new Player(Math.floor(Math.random() * 400),0,50,40)
+        //     ])
+        // }
         // for(let i = 0; i < en.length; i++){
         //     en[i].x = Math.floor(Math.random() * 400)
         // }
@@ -109,18 +117,18 @@ function BattlefielCanvas() {
 
     const myGameArea = {
         start: function() {
+            console.log(props.man)
             canvasContext = canvasRef.current.getContext("2d");
-            myPlayer = new Player(10,120,30,30)
+            myPlayer = new Player(100,200,30,30)
+
+        //     for(let i = 0; i < props.level[1]; i++){
+        //     setEn((prev) => [
+        //         ...prev, new Player(Math.floor(Math.random() * 400),0,50,40)
+        //     ])
+        // }
             // enemy = new Player(0,0,30,30)
             // enemy.x = Math.floor(Math.random() * 400)
             // en.x= Math.floor(Math.random() * 400)
-        },
-        addingEnemy: function(){
-            for(let i = 0; i < level; i++){
-                setEn((prev) => [
-                    ...prev, new Player(0,0,50,40)
-                ])
-            }
         },
         updatingGame: function(){
             
@@ -152,24 +160,16 @@ function BattlefielCanvas() {
 
         let req = requestAnimationFrame(updateGameArea)
 
-        for(let i =0; i < en.length; i++){
+        for(let i =0; i < props.enemies.length; i++){
             
-            en[i].enemyPosition(Math.floor(Math.random() * 1.5));
-            en[i].draw('red',canvasContext)
+            props.enemies[i].enemyPosition(Math.floor(Math.random() * 1.5));
+            props.enemies[i].draw('red',canvasContext)
             
 
-            if(myPlayer.crash(en[i])){
+            if(myPlayer.crash(props.enemies[i])){
                 cancelAnimationFrame(req)
             }
         }
-
-        
-
-
-        
-
-        
-
     }
 
     document.addEventListener("keydown", (e) => {
@@ -211,7 +211,6 @@ function BattlefielCanvas() {
         <div>
             <canvas width={480} height={270} ref={canvasRef}>
             </canvas>
-            <button onClick={addingEnemy}></button>
         </div>
     );
     

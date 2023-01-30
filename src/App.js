@@ -1,10 +1,18 @@
 // import logo from './logo.svg';
 // import './App.css';
+import { Link, useLocation } from "react-router-dom";
 import BattlefielCanvas from "./BattlefieldCanvas";
 
 
 
-function App() {
+function App(props) {
+
+  const location = useLocation();
+  const {enemies} = location.state
+  
+  const {playerName} = location.state
+  console.log(playerName)
+
   return (
     <div>
       <header className="row">
@@ -14,12 +22,14 @@ function App() {
         <section id="stats" className="col-2">
           <ul>
             <li>
-              <button>
-                Reset
-              </button>
+              <Link to={"/"} >
+                <button>
+                  Next
+                </button>
+              </Link>
             </li>
             <li>
-              Name:
+              Name: {playerName}
             </li>
             <li>
               Level:
@@ -30,7 +40,7 @@ function App() {
           </ul>
         </section>
       </header>
-      <BattlefielCanvas/>
+      <BattlefielCanvas enemies = {enemies}/>
     </div>
   );
 }

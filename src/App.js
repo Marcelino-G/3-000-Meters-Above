@@ -1,5 +1,6 @@
 // import logo from './logo.svg';
 // import './App.css';
+import { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import BattlefielCanvas from "./BattlefieldCanvas";
 
@@ -11,7 +12,20 @@ function App(props) {
   const {enemies} = location.state
   
   const {playerName} = location.state
-  console.log(playerName)
+  let {g} = location.state
+
+  let newf = parseInt(g) + 1;
+
+  sessionStorage.setItem("chapter", newf)
+
+  const lll = () => {
+
+    console.log(`session: ${sessionStorage.getItem('chapter')}`)
+    console.log(`g: ${typeof(g)}`)
+    console.log(`newf: ${typeof(newf)}`)
+  }
+
+  
 
   return (
     <div>
@@ -36,6 +50,9 @@ function App(props) {
             </li>
             <li>
               Score:
+              <button onClick={lll}>
+
+              </button>
             </li>
           </ul>
         </section>

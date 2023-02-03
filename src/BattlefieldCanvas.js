@@ -1,10 +1,12 @@
 import { useEffect, useRef } from "react"
 import { useState } from "react"
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import DialogueCanvas from "./DialogueCanvas";
 
 function BattlefielCanvas(props) {
+
+    const navigate = useNavigate();
 
     class Player {
         constructor(x, y, width, height){
@@ -43,10 +45,13 @@ function BattlefielCanvas(props) {
             this.y += this.vyu;
             this.y += this.vyd;
 
-            if (this.y === 20){
-                return(
-                    <DialogueCanvas/>
-                )
+            
+
+            if (this.y < 15){
+                
+                
+                navigate('/')
+                
                 
             }
         }

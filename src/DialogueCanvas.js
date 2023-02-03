@@ -3,6 +3,8 @@ import { Outlet, Link } from "react-router-dom";
 
 function DialogueCanvas(){
 
+    // const navigate = useNavigate();
+
     class Player {
         constructor(x, y, width, height){
             this.x = x;
@@ -44,12 +46,10 @@ function DialogueCanvas(){
     // ]
 
 
-    let [chapterOrder, setChapterOrder] = useState(0);
-    let [chapter, setChapter] = useState("one");
-
+    
+    // let [chapter, setChapter] = useState("one");
     const chapters =[
-        {
-            one: [
+            [
                 "Is anyone out there?",
                 "Can anyone hear me?",
                 "Respond! Someone!",
@@ -61,41 +61,70 @@ function DialogueCanvas(){
                 "... I think so",
                 "Well prepare yourself because here they come",
                 "Are you ready?"
-            ]
-        },
-        {
-            two: [
+            ],
+            [
                 "I'm back",
                 "yeup"
+            ],
+            [
+                "oh yeah",
+                "now its working"
+            ],
+            [
+                "dis is what I am talking about",
+                "no problemo"
             ]
-        }
-
     ]
+
+    let [chapterOrder, setChapterOrder] = useState(sessionStorage.getItem("chapter") === null? 0 : sessionStorage.getItem("chapter"));
 
     let [pos, setPos] = useState(285)
     let [letter, setLetter] = useState(0)
     let [dialogueLine, setDialogueLine] = useState(0);
-    let [currentDialogue, setCurrentDialogue] = useState(chapters[chapterOrder][chapter][dialogueLine]);
+    let [currentDialogue, setCurrentDialogue] = useState(chapters[chapterOrder][dialogueLine]);
     let [lineSwitch, setLineSwitch] = useState(false)
 
     
     let context;
     let req;
 
+    // useEffect(() => {
+    //     context = updating.start()
+    //     context.clearRect(0,0,dialogueRef.current.width, dialogueRef.current.height)
+    // },[])
+
     useEffect(() => {
-        
         updating.letters();
-        if(currentDialogue === chapters[chapterOrder][chapter][4]){
+        if(currentDialogue === chapters[chapterOrder][4]){
             nameFormRef.current.style.display = "flex"
             continueRef.current.setAttribute("disabled", "")
         }
-        if(currentDialogue === chapters[chapterOrder][chapter][chapters[chapterOrder][chapter].length-1]){
+        if(currentDialogue === chapters[chapterOrder][chapters[chapterOrder].length-1]){
             readyRef.current.removeAttribute("disabled")
             continueRef.current.setAttribute("disabled", "")
-            setChapterOrder(chapterOrder += 1)
-            setChapter("two")
         }
     },[lineSwitch]);
+
+    // useEffect(() => {
+
+    //     if(sessionStorage.getItem('chapter') === null){
+    //         console.log("man")
+    //         return
+    //     } else {
+    //         setChapterOrder(sessionStorage.getItem('chapter'))
+    //         console.log(sessionStorage.getItem("chapter"))
+    //         console.log("hey")
+    //     }
+    // },[])
+
+    // useEffect(() => {
+    //     updating.nextLineClick()
+    // }, [chapterOrder])
+
+    
+
+
+
 
     const updating = {
 
@@ -106,7 +135,7 @@ function DialogueCanvas(){
             context = updating.start()
             if(letter === currentDialogue.length){
                 setDialogueLine(dialogueLine+= 1)
-                setCurrentDialogue(chapters[chapterOrder][chapter][dialogueLine])
+                setCurrentDialogue(chapters[chapterOrder][dialogueLine])
                 setLetter(0);
                 setPos(275);
                 cancelAnimationFrame(req)
@@ -154,7 +183,7 @@ function DialogueCanvas(){
             if(myName === ""){
                 return
             } else{
-                setCurrentDialogue(chapters[0]['one'][dialogueLine])
+                setCurrentDialogue(chapters[0][dialogueLine])
                 nameFormRef.current.style.display = "none"
                 updating.nextLineClick();
                 continueRef.current.removeAttribute("disabled")
@@ -166,14 +195,17 @@ function DialogueCanvas(){
         }
     }
 
-    
-    
+    // const readE = () => {
+    //     context = updating.start()
+    //     context.clearRect(0,0,dialogueRef.current.width, dialogueRef.current.height)
+    //     navigate("s")
+    // }
 
     return (<div id="dialogueHolder" className="row justify-content-end">
                 <canvas width={900} height={350}  ref={dialogueRef}></canvas>
                 
                     
-                    <Link to={"s"} state={{enemies: en, playerName: myName}}  className="col-2">
+                    <Link to={"s"} state={{enemies: en, playerName: myName, g: chapterOrder}}  className="col-2">
                         <button ref={readyRef} disabled>ready!</button>
                     </Link>
                 <button ref={continueRef} className="col-2" onClick={updating.nextLineClick}>continue</button>

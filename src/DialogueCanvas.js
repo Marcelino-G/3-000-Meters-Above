@@ -35,19 +35,10 @@ function DialogueCanvas(){
 
 
     let [myName, setMyName] = useState("")
-    // const chapterOne = [
-    //     "is anyone out there?",
-    //     "yes! Help",
-    //     "what's your name?",
-    //     `does this work ${myName}?`,
-    //     "dont u worry",
-    //     "the saws are on their way",
-    //     "are you ready?"
-    // ]
-
-
+    let [myAge, setMyAge] = useState("")
     
-    // let [chapter, setChapter] = useState("one");
+
+
     const chapters =[
             [
                 "Is anyone out there?",
@@ -64,7 +55,10 @@ function DialogueCanvas(){
             ],
             [
                 "I'm back",
-                "yeup"
+                "how old are you?",
+                `${myAge}`,
+                "nice",
+                "... you ready?"
             ],
             [
                 "oh yeah",
@@ -76,7 +70,7 @@ function DialogueCanvas(){
             ]
     ]
 
-    let [chapterOrder, setChapterOrder] = useState(sessionStorage.getItem("chapter") === null? 0 : sessionStorage.getItem("chapter"));
+    let [chapterOrder, setChapterOrder] = useState(sessionStorage.getItem("chapter") === null? 0 : parseInt(sessionStorage.getItem("chapter")) );
 
     let [pos, setPos] = useState(285)
     let [letter, setLetter] = useState(0)
@@ -95,7 +89,8 @@ function DialogueCanvas(){
 
     useEffect(() => {
         updating.letters();
-        if(currentDialogue === chapters[chapterOrder][4]){
+        console.log(chapterOrder)
+        if(currentDialogue === "Yes! What is your name?" || currentDialogue === "how old are you?"){
             nameFormRef.current.style.display = "flex"
             continueRef.current.setAttribute("disabled", "")
         }
@@ -164,7 +159,7 @@ function DialogueCanvas(){
 
     const [en, setEn] = useState([new Player(Math.floor(Math.random() * 400),0,40,40)]);
 
-    const ready = () => {
+    const createEnemies = () => {
              for(let i = 0; i < Math.floor(Math.random() * (12 - 3 + 1) + 3 ); i++){
                 console.log(i)
                     setEn((prev) => [
@@ -176,21 +171,30 @@ function DialogueCanvas(){
     const form = {
 
         nameOnChange: function(e){
-            setMyName(e.target.value)
+            if(chapterOrder === 0){
+                console.log(e.target.value)
+                setMyName(e.target.value)
+            } else if(chapterOrder === 1){
+                console.log(e.target.value)
+                setMyAge(e.target.value)
+            }
+            
+            
         },
         nameSubmit: function(e){
 
-            if(myName === ""){
+            if(e.target.previousElementSibling.value === ""){
                 return
             } else{
-                setCurrentDialogue(chapters[0][dialogueLine])
+                setCurrentDialogue(chapters[chapterOrder][dialogueLine])
                 nameFormRef.current.style.display = "none"
                 updating.nextLineClick();
                 continueRef.current.removeAttribute("disabled")
-                ready();
+                createEnemies();
                 e.preventDefault();
             }
-            
+            console.log(myAge)
+            console.log(myName)
             
         }
     }

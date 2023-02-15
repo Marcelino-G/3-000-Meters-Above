@@ -1,28 +1,27 @@
 import React, { Children } from 'react';
 import ReactDOM from 'react-dom/client';
-// import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss"
-import BattlefielCanvas from './BattlefieldCanvas';
 import DialogueCanvas from "./DialogueCanvas"
+import ErrorPage from './ErrorPage';
 import { createBrowserRouter,
 RouterProvider } from 'react-router-dom';
-
 
 const router = createBrowserRouter([
 
   {
     path: "/",
-    element: <DialogueCanvas/>
+    element: <DialogueCanvas/>,
+    errorElement: <ErrorPage/>
   },
   {
     path: "s",
     element: <App/>,
+    errorElement: <ErrorPage/>
   }
 ])
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

@@ -1,15 +1,15 @@
-// import logo from './logo.svg';
-// import './App.css';
-import { useEffect } from "react";
+
 import { Link, useLocation } from "react-router-dom";
 import BattlefielCanvas from "./BattlefieldCanvas";
+import { useNavigate } from "react-router-dom";
 
 
 
 function App(props) {
 
+  const navigate = useNavigate();
   const location = useLocation();
-  const {enemies} = location.state
+  const {enemies} = location.state;
   
   const {playerName} = location.state
   let {g} = location.state
@@ -25,6 +25,11 @@ function App(props) {
     console.log(`newf: ${typeof(newf)}`)
   }
 
+  const resetGame = () => {
+    sessionStorage.clear();
+    navigate("/")
+  }
+
   
 
   return (
@@ -34,27 +39,9 @@ function App(props) {
           Game
         </h1>
         <section id="stats" className="col-2">
-          <ul>
-            <li>
-              <Link to={"/"} >
-                <button>
-                  Next
-                </button>
-              </Link>
-            </li>
-            <li>
-              Name: {playerName}
-            </li>
-            <li>
-              Level:
-            </li>
-            <li>
-              Score:
-              <button onClick={lll}>
-
-              </button>
-            </li>
-          </ul>
+          <button onClick={resetGame} >
+            Reset
+          </button>
         </section>
       </header>
       <BattlefielCanvas enemies = {enemies}/>

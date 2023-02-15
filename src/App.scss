@@ -38,13 +38,13 @@ form{
     height: 200px;
     input{
         width: 50%;
-        
     }
-    label{
-        
-        width: 50%;
+    #textInput{
+        display: none;
     }
-    
+    #radio{
+        display: none;
+    }
 }
 
 #dialogueHolder{

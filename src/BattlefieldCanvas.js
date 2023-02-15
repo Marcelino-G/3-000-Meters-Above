@@ -1,8 +1,7 @@
 import { useEffect, useRef } from "react"
-import { useState } from "react"
+
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import DialogueCanvas from "./DialogueCanvas";
 
 function BattlefielCanvas(props) {
 
@@ -97,8 +96,7 @@ function BattlefielCanvas(props) {
     const canvasRef = useRef();
     let canvasContext;
     let myPlayer;
-    // const [en, setEn] = useState([new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30), new Player(0,0,30,30)]);
-    // const [en, setEn] = useState([new Player(Math.floor(Math.random() * 400),0,40,40)]);
+  
 
     useEffect(() => {
         console.log(props.level)
@@ -107,16 +105,7 @@ function BattlefielCanvas(props) {
     },[])
 
     
-    const addingEnemy = () => {
-        // for(let i = 0; i < level; i++){
-        //     setEn((prev) => [
-        //         ...prev, new Player(Math.floor(Math.random() * 400),0,50,40)
-        //     ])
-        // }
-        // for(let i = 0; i < en.length; i++){
-        //     en[i].x = Math.floor(Math.random() * 400)
-        // }
-    }
+  
 
     
 
@@ -126,22 +115,11 @@ function BattlefielCanvas(props) {
             canvasContext = canvasRef.current.getContext("2d");
             myPlayer = new Player(100,200,30,30)
 
-        //     for(let i = 0; i < props.level[1]; i++){
-        //     setEn((prev) => [
-        //         ...prev, new Player(Math.floor(Math.random() * 400),0,50,40)
-        //     ])
-        // }
-            // enemy = new Player(0,0,30,30)
-            // enemy.x = Math.floor(Math.random() * 400)
-            // en.x= Math.floor(Math.random() * 400)
+       
         },
         updatingGame: function(){
             
-            // for(let i =0; i < en.length; i++){
             
-            //     en[i].x= Math.floor(Math.random() * 360)
-            //     en[i].y= Math.floor(Math.random() * 25)
-            // }
             
             updateGameArea();
             
@@ -156,12 +134,11 @@ function BattlefielCanvas(props) {
     const updateGameArea = () => {
         myGameArea.clearCanvas();
         myPlayer.updatePosition();
-        // en[0].enemyPosition();
+        
 
         
 
         myPlayer.draw("yellow", canvasContext);
-        // en[0].draw('red',canvasContext)
 
         let req = requestAnimationFrame(updateGameArea)
 
@@ -183,7 +160,6 @@ function BattlefielCanvas(props) {
             
         }
         if(e.key === "a"){
-            // console.log(en)
             myPlayer.vxl = -1.75;
             
         }

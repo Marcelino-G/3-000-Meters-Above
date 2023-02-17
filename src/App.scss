@@ -48,6 +48,15 @@ form{
 }
 
 #dialogueHolder{
-    border: solid black 5px;
-    background-color: lemonchiffon;
+    border: solid #E96479 5px;
+    background-color: #4D455D;
+    button{
+        background-color: #7DB9B6;
+        border: solid black 3px;
+        font-weight: bold;
+    }
+}
+
+#controls{
+    text-align: center;
 }

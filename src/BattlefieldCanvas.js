@@ -61,28 +61,28 @@ function BattlefielCanvas(props) {
 
         crash(enemy){
             //bottom right
-            if(this.x > enemy.x && this.x < enemy.x + 30 && this.y > enemy.y && this.y < enemy.y + 30){
+            if(this.x > enemy.x && this.x < enemy.x + 25 && this.y > enemy.y && this.y < enemy.y + 25){
                 alert("bye")
                 
                 console.log(myPlayer)
                 return true;
             } 
             //top left
-            if(this.x < enemy.x && this.x > enemy.x - 30 && this.y < enemy.y && this.y > enemy.y - 30){
+            if(this.x < enemy.x && this.x > enemy.x - 25 && this.y < enemy.y && this.y > enemy.y - 25){
                 alert("bye")
                 
                 console.log(myPlayer)
                 return true;
             } 
             //top right
-            if(this.x > enemy.x && this.x < enemy.x + 30 && this.y < enemy.y && this.y > enemy.y - 30){
+            if(this.x > enemy.x && this.x < enemy.x + 25 && this.y < enemy.y && this.y > enemy.y - 25){
                 alert("bye")
                 
                 console.log(myPlayer)
                 return true;
             } 
             //bottom left
-            if(this.x < enemy.x && this.x > enemy.x - 30 && this.y > enemy.y && this.y < enemy.y + 30){
+            if(this.x < enemy.x && this.x > enemy.x - 25 && this.y > enemy.y && this.y < enemy.y + 25){
                 alert("bye")
                 
                 console.log(myPlayer)
@@ -99,7 +99,6 @@ function BattlefielCanvas(props) {
   
 
     useEffect(() => {
-        console.log(props.level)
         myGameArea.start();
         myGameArea.updatingGame();
     },[])
@@ -111,9 +110,14 @@ function BattlefielCanvas(props) {
 
     const myGameArea = {
         start: function() {
-            console.log(props.man)
             canvasContext = canvasRef.current.getContext("2d");
             myPlayer = new Player(100,200,30,30)
+
+            for(let i =0; i < props.enemies.length; i++){
+            
+                props.enemies[i].enemyPosition(Math.floor(Math.random() * (13-3+1) + 3));
+            }
+            console.log(props.enemies)
 
        
         },
@@ -144,7 +148,8 @@ function BattlefielCanvas(props) {
 
         for(let i =0; i < props.enemies.length; i++){
             
-            props.enemies[i].enemyPosition(Math.floor(Math.random() * 1.5));
+            // props.enemies[i].enemyPosition(Math.floor(Math.random() * (2-.5+1) + .5));
+            props.enemies[i].y += .25;
             props.enemies[i].draw('red',canvasContext)
             
 
@@ -169,6 +174,7 @@ function BattlefielCanvas(props) {
         if (e.key === "s"){
             myPlayer.vyd = 1.75;
         }
+        console.log(myPlayer.x)
     })
 
     document.addEventListener("keyup", (e) => {

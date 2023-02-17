@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 
+
 function DialogueCanvas(){
     class Player {
         constructor(x, y, width, height){
@@ -32,41 +33,44 @@ function DialogueCanvas(){
     const radioFormRef = useRef();
 
 
-    let [myName, setMyName] = useState("")
-    let [myAge, setMyAge] = useState("")
-    let [myGroup, setMyGroup] = useState("")
+    let [myGroup, setMyGroup] = useState(sessionStorage.getItem("playerGroup") === null? "" : sessionStorage.getItem("playerGroup"))
+    let [myName, setMyName] = useState(sessionStorage.getItem("playerName") === null? "" : sessionStorage.getItem("playerName"))
+    let [myAge, setMyAge] = useState(sessionStorage.getItem("playerAge") === null? "" : sessionStorage.getItem("playerAge"))
+    
     
 
 
     const chapters =[
             [
                 "Hello!",
-                "Is anyone out there?!",
+                "Is anyone out there?",
                 "Respond!",
                 "Someone!",
                 "I...",
                 "Yes! I can hear you!",
                 "Who do you fight for?!?",
-                `...${myGroup}`,
+                `... ${myGroup}`,
                 "Okay.... can you still fly?",
-                "...I think so",
-                "You have no choice if you want to survive because here they come!",
-                "Are you ready?"
+                "... I think so",
+                "Well strap in...",
+                "HERE THEY COME!"
                 
             ],
             [
                 "Okay, you're still alive for now",
                 "What is your name?",
-                `...${myName}`,
-                "...What about yours?",
-                "Nevermind that, we're about 3,000 meters above you",
-                "You'll have to listen to my every command if you want to make it out alive",
+                `... ${myName}`,
+                "... What about yours?",
+                "Nevermind that...",
+                "We're about 3,000 meters above you",
+                "Listen to me carefully",
+                "... if you want to make it out alive",
                 "Now, push forward!"
             ],
             [
-                "You really know how to pilot that machine dont you",
+                "You pilot that machine with ease...",
                 "How old are you?",
-                `...${myAge}`,
+                `... ${myAge}`,
                 "Hmm... that's the same age when I...",
                 "ANOTHER ATTACK!",
                 "PUSH!!!"
@@ -77,15 +81,15 @@ function DialogueCanvas(){
                 "YOU GOT TO MAKE IT BACK...",
                 "BACK TO RELENA!",
                 "Relena... who is that...",
-                "Why do I know this..."
+                "Why do I know this name..."
             ],
             [
-                `...${myGroup}`,
-                `...${myName}`,
-                `...${myAge}`,
+                `... ${myGroup}`,
+                `... ${myName}`,
+                `... ${myAge}`,
                 "What is happening...",
                 "We fight for the same cause...",
-                "We have the same name... same age...",
+                "We have the same name... age...",
                 "KID! CAN YOU HEAR ME?!",
                 "I LOST TRACK OF YOU!",
                 "WHERE ARE YOU?!"
@@ -101,13 +105,14 @@ function DialogueCanvas(){
     ]
 
     let [chapterOrder, setChapterOrder] = useState(sessionStorage.getItem("chapter") === null? 0 : parseInt(sessionStorage.getItem("chapter")) );
-    let [pos, setPos] = useState(285)
+    let [posX, setPosX] = useState(115)
+    let [posY, setPosY] = useState(110)
     let [letter, setLetter] = useState(0)
     let [dialogueLine, setDialogueLine] = useState(0);
     let [currentDialogue, setCurrentDialogue] = useState(chapters[chapterOrder][dialogueLine]);
     let [lineSwitch, setLineSwitch] = useState(false)
 
-    const [en, setEn] = useState([new Player(Math.floor(Math.random() * 400),0,40,40)]);
+    const [enemies, setEnemies] = useState([new Player(Math.floor(Math.random() * 400),0,25,25)]);
 
     
     let context;
@@ -127,6 +132,7 @@ function DialogueCanvas(){
         if(currentDialogue === chapters[chapterOrder][chapters[chapterOrder].length-1]){
             readyRef.current.removeAttribute("disabled")
             continueRef.current.setAttribute("disabled", "")
+            createEnemies();
         }
     },[lineSwitch]);
 
@@ -141,23 +147,23 @@ function DialogueCanvas(){
                 setDialogueLine(dialogueLine+= 1)
                 setCurrentDialogue(chapters[chapterOrder][dialogueLine])
                 setLetter(0);
-                setPos(275);
+                setPosX(115);
                 cancelAnimationFrame(req)
             } else{
-                context.font = "25px serif"
-                context.fillText(currentDialogue[letter],pos, 225)
-                context.textAlign = "center"
+                context.font = "30px serif"
+                context.fillStyle = "#F5E9CF"
+                context.fillText(currentDialogue[letter], posX, posY)
+                // context.textAlign = "center"
                 setLetter(letter+= 1);
                 if(currentDialogue[letter] === " "){
-                    setPos(pos+= 10);
-                } else{
-                    setPos(pos+= 15);
+                    setPosX(posX+= 25);
+                }else{
+                    setPosX(posX+= 22);
                 }
                 
+                
                 req = requestAnimationFrame(updating.letters)   
-            }
-    
-             
+            }      
         },
         nextLineClick: function(){
             context = updating.start()
@@ -167,12 +173,21 @@ function DialogueCanvas(){
     }
 
     const createEnemies = () => {
-             for(let i = 0; i < Math.floor(Math.random() * (12 - 3 + 1) + 3 ); i++){
-                console.log(i)
-                    setEn((prev) => [
-                        ...prev, new Player(Math.floor(Math.random() * 400),0,50,40)
-                    ])
-        }
+
+        if(currentDialogue === chapters[5][chapters[5].length-1]){
+            console.log('sa')
+            for(let i = 0; i < Math.floor(Math.random() * (150-125+1) + 125 ); i++){
+                setEnemies((prev) => [
+                    ...prev, new Player(Math.floor(Math.random() * (440-0+1)+0),0,25,25)
+                ])
+            }
+        } else {
+            for(let i = 0; i < Math.floor(Math.random() * (22 - 15 + 1) + 18 ); i++){
+                setEnemies((prev) => [
+                    ...prev, new Player(Math.floor(Math.random() * (410-0+1)+0),0,25,25)
+                ])
+            }
+        }    
     }
 
     const questionForm = {
@@ -215,20 +230,19 @@ function DialogueCanvas(){
         radioFormRef.current.style.display = "none"
         updating.nextLineClick();
         continueRef.current.removeAttribute("disabled")
-        createEnemies();
         e.preventDefault();
     }
 
     
 
-    return (<div id="dialogueHolder" className="row justify-content-end">
-                <canvas width={900} height={350}  ref={dialogueRef}></canvas>
+    return (<div id="dialogueHolder">
+                <canvas width={1000} height={250}  ref={dialogueRef}></canvas>
                 
                     
-                    <Link to={"s"} state={{enemies: en, playerName: myName, g: chapterOrder}}  className="col-2">
+                    <Link to={"s"} state={{enemies: enemies, playerName: myName, playerAge: myAge, playerGroup: myGroup, chapter: chapterOrder, }}>
                         <button ref={readyRef} disabled>ready!</button>
                     </Link>
-                <button ref={continueRef} className="col-2" onClick={updating.nextLineClick}>continue</button>
+                <button ref={continueRef} onClick={updating.nextLineClick}>continue</button>
                 {/* <form ref={questionFormRef}  >
                     <div  >
                         <input type="text" id="name" name="name" onChange={questionForm.answerOnChange} required></input>

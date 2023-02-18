@@ -20,9 +20,9 @@ function DialogueCanvas(){
             this.ctx.fillStyle = color;
             this.ctx.fillRect(this.x, this.y, this.width, this.height);
         }
-        enemyPosition(x){
-            this.y += x;
-        }
+        // enemyPosition(x){
+        //     this.y += x;
+        // }
     }
 
     const dialogueRef = useRef();
@@ -106,17 +106,19 @@ function DialogueCanvas(){
 
     let [chapterOrder, setChapterOrder] = useState(sessionStorage.getItem("chapter") === null? 0 : parseInt(sessionStorage.getItem("chapter")) );
     let [posX, setPosX] = useState(115)
-    let [posY, setPosY] = useState(110)
+    let [posY, setPosY] = useState(95)
     let [letter, setLetter] = useState(0)
     let [dialogueLine, setDialogueLine] = useState(0);
     let [currentDialogue, setCurrentDialogue] = useState(chapters[chapterOrder][dialogueLine]);
     let [lineSwitch, setLineSwitch] = useState(false)
 
-    const [enemies, setEnemies] = useState([new Player(Math.floor(Math.random() * 400),0,25,25)]);
+    const [enemies, setEnemies] = useState([new Player(Math.floor(Math.random() * 400),0,60,60)]);
 
     
     let context;
     let req;
+
+    
 
     useEffect(() => {
         updating.letters();
@@ -135,6 +137,8 @@ function DialogueCanvas(){
             createEnemies();
         }
     },[lineSwitch]);
+
+    
 
     const updating = {
 
@@ -178,13 +182,13 @@ function DialogueCanvas(){
             console.log('sa')
             for(let i = 0; i < Math.floor(Math.random() * (150-125+1) + 125 ); i++){
                 setEnemies((prev) => [
-                    ...prev, new Player(Math.floor(Math.random() * (440-0+1)+0),0,25,25)
+                    ...prev, new Player(Math.floor(Math.random() * (1215-0+1)+0),Math.floor(Math.random() * (100-5+1)+5),60,60)
                 ])
             }
         } else {
-            for(let i = 0; i < Math.floor(Math.random() * (22 - 15 + 1) + 18 ); i++){
+            for(let i = 0; i < Math.floor(Math.random() * (30 - 17 + 1) + 17 ); i++){
                 setEnemies((prev) => [
-                    ...prev, new Player(Math.floor(Math.random() * (410-0+1)+0),0,25,25)
+                    ...prev, new Player(Math.floor(Math.random() * (1175-0+1)+0),Math.floor(Math.random() * (100-5+1)+5),60,60)
                 ])
             }
         }    
@@ -236,39 +240,34 @@ function DialogueCanvas(){
     
 
     return (<div id="dialogueHolder">
-                <canvas width={1000} height={250}  ref={dialogueRef}></canvas>
+                <canvas width={1250} height={200} ref={dialogueRef}></canvas>
                 
-                    
-                    <Link to={"s"} state={{enemies: enemies, playerName: myName, playerAge: myAge, playerGroup: myGroup, chapter: chapterOrder, }}>
-                        <button ref={readyRef} disabled>ready!</button>
+                <div className="row justify-content-end m-0">
+                    <Link className="col-2" to={"s"} state={{enemies: enemies, playerName: myName, playerAge: myAge, playerGroup: myGroup, chapter: chapterOrder, }}>
+                        <button ref={readyRef} disabled className="col-12">ready!</button>
                     </Link>
-                <button ref={continueRef} onClick={updating.nextLineClick}>continue</button>
-                {/* <form ref={questionFormRef}  >
-                    <div  >
-                        <input type="text" id="name" name="name" onChange={questionForm.answerOnChange} required></input>
-                    </div>
-                    <div ref={radioFormRef} id="radio" onChange={questionForm.answerOnChange}>
-                        <input type="radio" name='group' id="NORA" value="Nora" required></input>
-                        <label htmlFor='Nora' >NORA</label>
-                        <input type="radio" name='group' id="Avalanche" value="Avalanche"></input>
-                        <label htmlFor='Avalanche'>Avalanche</label>
-                        <input type="radio" name='group' id="Sanc Kingdom" value="Sanc Kingdom" ></input>
-                        <label htmlFor='Sanc Kingdom' >Sanc Kingdom</label>
-                    </div>
-                    <input  type="submit" onSubmit={questionForm.answerSubmit} ></input>
-                </form> */}
+                    <button ref={continueRef} onClick={updating.nextLineClick} className="col-2">continue</button>
+                </div>
+                    
+                
                 <form onSubmit={handleSubmit} ref={textFormRef} id="textInput">
                     <input type="text" id="name" name="name" onChange={questionForm.answerOnChange} required></input>
                     <input  type="submit" value="submit"></input>
                 </form>
-                <form onSubmit={handleSubmit} ref={radioFormRef} id="radio" onChange={questionForm.answerOnChange}>
-                        <input type="radio" name='group' id="NORA" value="Nora" required></input>
-                        <label htmlFor='Nora' >NORA</label>
-                        <input type="radio" name='group' id="Avalanche" value="Avalanche"></input>
-                        <label htmlFor='Avalanche'>Avalanche</label>
-                        <input type="radio" name='group' id="Sanc Kingdom" value="Sanc Kingdom" ></input>
-                        <label htmlFor='Sanc Kingdom' >Sanc Kingdom</label>
-                        <input  type="submit" value="submit"></input>
+                <form onSubmit={handleSubmit} ref={radioFormRef} id="radio" onChange={questionForm.answerOnChange} className='row g-2'>
+                        <div className="radioHolder">
+                            <input type="radio" name='group' id="NORA" value="Nora" required></input>
+                            <label htmlFor='NORA' >NORA</label>
+                        </div>
+                        <div className="radioHolder">
+                            <input type="radio" name='group' id="Avalanche" value="Avalanche"></input>
+                            <label htmlFor='Avalanche'>Avalanche</label>
+                        </div>
+                        <div className="radioHolder">
+                            <input type="radio" name='group' id="Sanc Kingdom" value="Sanc Kingdom" ></input>
+                            <label htmlFor='Sanc Kingdom' >Sanc Kingdom</label>
+                        </div>
+                        <input  type="submit" value="submit" className="col-1"></input>
                 </form>
                 
                 <Outlet/>

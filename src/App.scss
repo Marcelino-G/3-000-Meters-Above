@@ -5,39 +5,20 @@
 }
 
 #root{
-    // background-color: red;
-    margin-top: .85rem;
+    margin-top: 1rem;
 }
 
-header{
-    background-color: green;
-    h1{
-        background-color: purple;
-        margin: 0;
+#dialogueHolder{
+    border: solid #E96479 5px;
+    background-color: #4D455D;
+    padding-bottom: .25rem;
+    canvas{
+        width: 100%;
     }
-    #stats{
-        background-color: orange;
-        ul{
-            list-style: none;
-            padding: 0;
-        }
-    }
-}
-
-canvas{
-    // background-color: pink;
-    margin: 0 auto;
-}
-
-form{
-    display: none;
-    text-align: center;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 200px;
-    input{
-        width: 50%;
+    button{
+        background-color: #7DB9B6;
+        border: solid black 3px;
+        font-weight: bold;
     }
     #textInput{
         display: none;
@@ -45,18 +26,52 @@ form{
     #radio{
         display: none;
     }
-}
-
-#dialogueHolder{
-    border: solid #E96479 5px;
-    background-color: #4D455D;
-    button{
-        background-color: #7DB9B6;
-        border: solid black 3px;
-        font-weight: bold;
+    form{
+        text-align: center;
+        label{
+            color: #F5E9CF
+        }
+        input{
+            font-weight: bold;
+        }
     }
 }
 
-#controls{
-    text-align: center;
+#gameplayHolder{
+    color: #F5E9CF;
+    border: solid #E96479 5px;
+    background-color: #4D455D;
+    
+    header{
+        text-align: center;
+        
+        margin: 0 auto;
+    }
+    #controls{
+        list-style: none;
+        
+        margin: 0;
+        padding: .5rem
+    }
 }
+
+#battlefieldHolder{
+    
+    canvas{
+        
+        width: 98%;
+        margin: .5rem;
+        background-color: #7DB9B6;
+    }
+}
+
+
+// canvas{
+//     background-color: pink;
+//     margin: 0 auto;
+// }
+
+
+
+
+

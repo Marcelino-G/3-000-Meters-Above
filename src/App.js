@@ -32,26 +32,34 @@ function App(props) {
   
 
   return (
-    <div>
+    <div id="gameplayHolder">
       <header className="row">
-        <h1 className="col-10">
-          Game
+        <h1 className="col-11">
+          3,000 Meters Above
         </h1>
-        <section id="stats" className="col-2">
-          <button onClick={resetGame} >
-            Reset
-          </button>
-        </section>
+        <button onClick={resetGame} className='col-1'>
+          Reset
+        </button>
       </header>
       <BattlefielCanvas enemies = {enemies}/>
-      <div id="controls" className="row">
-        <kbd className="col-1 offset-1 border">W</kbd>
-        <div className="row border">
-          <kbd className="col-1">A</kbd>
-          <kbd className="col-1">S</kbd>
-          <kbd className="col-1">D</kbd>
-        </div>
-      </div>
+      <ul id="controls">
+        <li>
+          <kbd>W</kbd>
+          <span> Move up</span>
+        </li>
+        <li>
+          <kbd>A</kbd>
+          <span> Move left</span>
+        </li>
+        <li>
+          <kbd>S</kbd>
+          <span> Move down</span>
+        </li>
+        <li>
+          <kbd>D</kbd>
+          <span> Move right</span>
+        </li>
+      </ul>
     </div>
   );
 }

@@ -41,7 +41,7 @@ function BattlefielCanvas(props) {
             this.y += this.vyd;
 
             if (this.y < 15){
-                navigate('/dialogue')
+                navigate('/game')
             }
         }
 
@@ -110,7 +110,7 @@ function BattlefielCanvas(props) {
                 cancelAnimationFrame(animationReq)
                 
                 if(props.chapter === 5){
-                    navigate('/dialogue/game/youlose')
+                    navigate('/game/play/youlose')
                 }
             }
         }

@@ -15,17 +15,17 @@ import ErrorPage from './ErrorPage';
 const router = createBrowserRouter([
 
   {
-    path: "/dialogue",
+    path: "/game",
     element: <DialogueCanvas/>,
     errorElement: <ErrorPage/>
   },
   {
-    path: "/dialogue/game",
+    path: "/game/play",
     element: <Game/>,
     errorElement: <ErrorPage/>
   },
   {
-    path: "/dialogue/game/youlose",
+    path: "/game/play/youlose",
     element: <YouLose/>,
     errorElement: <ErrorPage/>
   }

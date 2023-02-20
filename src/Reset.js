@@ -6,7 +6,7 @@ function Reset (){
 
     const resetGame = () => {
         sessionStorage.clear();
-        navigate("/dialogue")
+        navigate("/game")
       }
 
       return(<div className='col-1'>

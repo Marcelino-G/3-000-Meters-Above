@@ -15,4 +15,5 @@ You are greeted with a "dialogue" page that introduces the start of the adventur
 "requestAnimationFrame" is key to this project because it "writes/draws" out the dialogue and player/enemy movements.
 
 ## Completed Pictures
-
+<img width ="400" src="./FinishedPictures/metersAbove1.png" />
+<img width ="400" src="./FinishedPictures/metersAbove2.png" />

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-
+import { Route } from 'react-router-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss"
 
@@ -17,23 +17,28 @@ const router = createBrowserRouter([
   {
     path: "/game",
     element: <DialogueCanvas/>,
-    errorElement: <ErrorPage/>
+    // errorElement: <ErrorPage/>
   },
   {
     path: "/game/play",
     element: <Game/>,
-    errorElement: <ErrorPage/>
+    // errorElement: <ErrorPage/>
   },
   {
     path: "/game/play/youlose",
     element: <YouLose/>,
-    errorElement: <ErrorPage/>
+    // errorElement: <ErrorPage/>
+  },
+  {
+    path: "*",
+    element: <ErrorPage/>
   }
 ])
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    
     <RouterProvider router={router} />
   </React.StrictMode>
 );

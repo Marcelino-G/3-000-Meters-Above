@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/game/static/css/main.1d356ddf.css",
-    "main.js": "/game/static/js/main.b0cd0a22.js",
-    "static/js/787.6a541d2d.chunk.js": "/game/static/js/787.6a541d2d.chunk.js",
-    "index.html": "/game/index.html",
-    "main.1d356ddf.css.map": "/game/static/css/main.1d356ddf.css.map",
-    "main.b0cd0a22.js.map": "/game/static/js/main.b0cd0a22.js.map",
-    "787.6a541d2d.chunk.js.map": "/game/static/js/787.6a541d2d.chunk.js.map"
+    "main.css": "/3-000-Meters-Above/static/css/main.1d356ddf.css",
+    "main.js": "/3-000-Meters-Above/static/js/main.0564524e.js",
+    "static/js/787.6a541d2d.chunk.js": "/3-000-Meters-Above/static/js/787.6a541d2d.chunk.js",
+    "index.html": "/3-000-Meters-Above/index.html",
+    "main.1d356ddf.css.map": "/3-000-Meters-Above/static/css/main.1d356ddf.css.map",
+    "main.0564524e.js.map": "/3-000-Meters-Above/static/js/main.0564524e.js.map",
+    "787.6a541d2d.chunk.js.map": "/3-000-Meters-Above/static/js/787.6a541d2d.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1d356ddf.css",
-    "static/js/main.b0cd0a22.js"
+    "static/js/main.0564524e.js"
   ]
 }

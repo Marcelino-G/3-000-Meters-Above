@@ -41,7 +41,7 @@ function BattlefielCanvas(props) {
             this.y += this.vyd;
 
             if (this.y < 15){
-                navigate('/game')
+                navigate('/3-000-Meters-Above')
             }
         }
 
@@ -110,7 +110,7 @@ function BattlefielCanvas(props) {
                 cancelAnimationFrame(animationReq)
                 
                 if(props.chapter === 5){
-                    navigate('/game/play/youlose')
+                    navigate('/3-000-Meters-Above/play/youlose')
                 }
             }
         }

@@ -15,17 +15,17 @@ import ErrorPage from './ErrorPage';
 const router = createBrowserRouter([
 
   {
-    path: "/game",
+    path: "/3-000-Meters-Above",
     element: <DialogueCanvas/>,
     errorElement: <ErrorPage/>
   },
   {
-    path: "/game/play",
+    path: "/3-000-Meters-Above/play",
     element: <Game/>,
     errorElement: <ErrorPage/>
   },
   {
-    path: "/game/play/youlose",
+    path: "/3-000-Meters-Above/play/youlose",
     element: <YouLose/>,
     errorElement: <ErrorPage/>
   },

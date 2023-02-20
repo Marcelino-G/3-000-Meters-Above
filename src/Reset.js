@@ -6,7 +6,7 @@ function Reset (){
 
     const resetGame = () => {
         sessionStorage.clear();
-        navigate("/game")
+        navigate("/3-000-Meters-Above")
       }
 
       return(<div className='col-1'>

@@ -207,7 +207,7 @@ function DialogueCanvas(){
                 <canvas width={1250} height={200} ref={dialogueRef}></canvas>
                 
                 <div className="row justify-content-end m-0">
-                    <Link className="col-2" to={"game"} state={{enemies: enemies, playerName: myName, playerAge: myAge, playerGroup: myGroup, chapter: chapterOrder,}}>
+                    <Link className="col-2" to={"/dialogue/game"} state={{enemies: enemies, playerName: myName, playerAge: myAge, playerGroup: myGroup, chapter: chapterOrder,}}>
                         <button ref={readyRef} disabled className="col-12">ready!</button>
                     </Link>
                     <button ref={continueRef} onClick={updating.nextLineClick} className="col-2">continue</button>

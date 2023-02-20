@@ -41,7 +41,7 @@ function BattlefielCanvas(props) {
             this.y += this.vyd;
 
             if (this.y < 15){
-                navigate('/')
+                navigate('/dialogue')
             }
         }
 
@@ -104,13 +104,13 @@ function BattlefielCanvas(props) {
             }
 
             props.enemies[i].y += .10;
-            props.enemies[i].draw('red',canvasContext)
+            props.enemies[i].draw('orange',canvasContext)
             
             if(myPlayer.crash(props.enemies[i])){
                 cancelAnimationFrame(animationReq)
                 
                 if(props.chapter === 5){
-                    navigate('/youlose')
+                    navigate('/dialogue/game/youlose')
                 }
             }
         }

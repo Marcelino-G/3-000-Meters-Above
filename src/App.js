@@ -1,13 +1,9 @@
-
-import { Link, useLocation } from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import BattlefielCanvas from "./BattlefieldCanvas";
-import { useNavigate } from "react-router-dom";
+import Reset from "./Reset";
 
+function Game(props) {
 
-
-function App(props) {
-
-  const navigate = useNavigate();
   const location = useLocation();
 
   const {enemies} = location.state;
@@ -18,18 +14,9 @@ function App(props) {
   sessionStorage.setItem("playerName", playerName)
   sessionStorage.setItem("playerAge", playerAge)
 
-
-
   let {chapter} = location.state
   let chapterInt = parseInt(chapter) + 1;
   sessionStorage.setItem("chapter", chapterInt)
-
-  const resetGame = () => {
-    sessionStorage.clear();
-    navigate("/")
-  }
-
-  
 
   return (
     <div id="gameplayHolder">
@@ -37,11 +24,9 @@ function App(props) {
         <h1 className="col-11">
           3,000 Meters Above
         </h1>
-        <button onClick={resetGame} className='col-1'>
-          Reset
-        </button>
+        <Reset/>
       </header>
-      <BattlefielCanvas enemies = {enemies}/>
+      <BattlefielCanvas enemies = {enemies} chapter={chapter}/>
       <ul id="controls">
         <li>
           <kbd>W</kbd>
@@ -64,4 +49,4 @@ function App(props) {
   );
 }
 
-export default App;
+export default Game;

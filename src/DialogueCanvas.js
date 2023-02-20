@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 
-
 function DialogueCanvas(){
-    class Player {
+    class EnemyPlayer {
         constructor(x, y, width, height){
             this.x = x;
             this.y = y;
@@ -13,33 +12,32 @@ function DialogueCanvas(){
             this.vxl = 0;
             this.vyu = 0;
             this.vyd = 0;
+            this.switchh = false;
         }
-
         draw(color, context){
             this.ctx = context;
             this.ctx.fillStyle = color;
             this.ctx.fillRect(this.x, this.y, this.width, this.height);
         }
-        // enemyPosition(x){
-        //     this.y += x;
-        // }
+        xDirection(){
+            if(this.x > 1200){
+                this.switchh = !this.switchh;
+            } else if(this.x < 5){
+                this.switchh = !this.switchh;
+            }
+        }
     }
 
     const dialogueRef = useRef();
-    const questionFormRef = useRef();
     const readyRef = useRef();
     const continueRef = useRef();
     const textFormRef = useRef();
     const radioFormRef = useRef();
 
-
     let [myGroup, setMyGroup] = useState(sessionStorage.getItem("playerGroup") === null? "" : sessionStorage.getItem("playerGroup"))
     let [myName, setMyName] = useState(sessionStorage.getItem("playerName") === null? "" : sessionStorage.getItem("playerName"))
     let [myAge, setMyAge] = useState(sessionStorage.getItem("playerAge") === null? "" : sessionStorage.getItem("playerAge"))
     
-    
-
-
     const chapters =[
             [
                 "Hello!",
@@ -105,29 +103,24 @@ function DialogueCanvas(){
     ]
 
     let [chapterOrder, setChapterOrder] = useState(sessionStorage.getItem("chapter") === null? 0 : parseInt(sessionStorage.getItem("chapter")) );
-    let [posX, setPosX] = useState(115)
-    let [posY, setPosY] = useState(95)
-    let [letter, setLetter] = useState(0)
     let [dialogueLine, setDialogueLine] = useState(0);
     let [currentDialogue, setCurrentDialogue] = useState(chapters[chapterOrder][dialogueLine]);
+    let [letter, setLetter] = useState(0)
     let [lineSwitch, setLineSwitch] = useState(false)
-
-    const [enemies, setEnemies] = useState([new Player(Math.floor(Math.random() * 400),0,60,60)]);
-
+    let [posX, setPosX] = useState(115)
+    let [posY, setPosY] = useState(95)
     
+    const [enemies, setEnemies] = useState([new EnemyPlayer(Math.floor(Math.random() * 400),0,60,60)]);
+
     let context;
-    let req;
-
-    
+    let animationReq;
 
     useEffect(() => {
         updating.letters();
         if(currentDialogue === "Who do you fight for?!?"){
-            // questionFormRef.current.style.display = "flex"
             radioFormRef.current.style.display = "block"
             continueRef.current.setAttribute("disabled", "")
         } else if(currentDialogue === "What is your name?" || currentDialogue === "How old are you?"){
-            // questionFormRef.current.style.display = "flex"
             textFormRef.current.style.display = "block"
             continueRef.current.setAttribute("disabled", "")
         }
@@ -138,10 +131,7 @@ function DialogueCanvas(){
         }
     },[lineSwitch]);
 
-    
-
     const updating = {
-
         start: function(){
             return context = dialogueRef.current.getContext('2d')
         },
@@ -152,12 +142,11 @@ function DialogueCanvas(){
                 setCurrentDialogue(chapters[chapterOrder][dialogueLine])
                 setLetter(0);
                 setPosX(115);
-                cancelAnimationFrame(req)
+                cancelAnimationFrame(animationReq)
             } else{
                 context.font = "30px serif"
                 context.fillStyle = "#F5E9CF"
                 context.fillText(currentDialogue[letter], posX, posY)
-                // context.textAlign = "center"
                 setLetter(letter+= 1);
                 if(currentDialogue[letter] === " "){
                     setPosX(posX+= 25);
@@ -165,8 +154,7 @@ function DialogueCanvas(){
                     setPosX(posX+= 22);
                 }
                 
-                
-                req = requestAnimationFrame(updating.letters)   
+                animationReq = requestAnimationFrame(updating.letters)   
             }      
         },
         nextLineClick: function(){
@@ -179,23 +167,21 @@ function DialogueCanvas(){
     const createEnemies = () => {
 
         if(currentDialogue === chapters[5][chapters[5].length-1]){
-            console.log('sa')
-            for(let i = 0; i < Math.floor(Math.random() * (150-125+1) + 125 ); i++){
+            for(let i = 0; i < Math.floor(Math.random() * (300-275+1) + 275 ); i++){
                 setEnemies((prev) => [
-                    ...prev, new Player(Math.floor(Math.random() * (1215-0+1)+0),Math.floor(Math.random() * (100-5+1)+5),60,60)
+                    ...prev, new EnemyPlayer(Math.floor(Math.random() * (1215-0+1)+0),Math.floor(Math.random() * (300-5+1)+5),60,60)
                 ])
             }
         } else {
-            for(let i = 0; i < Math.floor(Math.random() * (30 - 17 + 1) + 17 ); i++){
+            for(let i = 0; i < Math.floor(Math.random() * (40 - 25 + 1) + 25 ); i++){
                 setEnemies((prev) => [
-                    ...prev, new Player(Math.floor(Math.random() * (1175-0+1)+0),Math.floor(Math.random() * (100-5+1)+5),60,60)
+                    ...prev, new EnemyPlayer(Math.floor(Math.random() * (1175-0+1)+0),Math.floor(Math.random() * (175-5+1)+5),60,60)
                 ])
             }
         }    
     }
 
     const questionForm = {
-
         answerOnChange: function(e){
             if(chapterOrder === 0){
                 setMyGroup(e.target.value)
@@ -203,31 +189,11 @@ function DialogueCanvas(){
                 setMyName(e.target.value)
             } else if(chapterOrder === 2){
                 setMyAge(e.target.value)
-            }
-              
+            }    
         },
-        answerSubmit: function(e){
-
-            
-            
-
-            // if(e.target.previousElementSibling.value === "" || myGroup === ""){
-            //     return
-            // } else{
-            //     setCurrentDialogue(chapters[chapterOrder][dialogueLine])
-            //     questionFormRef.current.style.display = "none"
-            //     updating.nextLineClick();
-            //     continueRef.current.removeAttribute("disabled")
-            //     createEnemies();
-            //     e.preventDefault();
-            // }
-            
-            
-        }
     }
 
     const handleSubmit = (e) => {
-
 
         setCurrentDialogue(chapters[chapterOrder][dialogueLine])
         textFormRef.current.style.display = "none"
@@ -237,19 +203,16 @@ function DialogueCanvas(){
         e.preventDefault();
     }
 
-    
-
     return (<div id="dialogueHolder">
                 <canvas width={1250} height={200} ref={dialogueRef}></canvas>
                 
                 <div className="row justify-content-end m-0">
-                    <Link className="col-2" to={"s"} state={{enemies: enemies, playerName: myName, playerAge: myAge, playerGroup: myGroup, chapter: chapterOrder, }}>
+                    <Link className="col-2" to={"game"} state={{enemies: enemies, playerName: myName, playerAge: myAge, playerGroup: myGroup, chapter: chapterOrder,}}>
                         <button ref={readyRef} disabled className="col-12">ready!</button>
                     </Link>
                     <button ref={continueRef} onClick={updating.nextLineClick} className="col-2">continue</button>
                 </div>
                     
-                
                 <form onSubmit={handleSubmit} ref={textFormRef} id="textInput">
                     <input type="text" id="name" name="name" onChange={questionForm.answerOnChange} required></input>
                     <input  type="submit" value="submit"></input>
@@ -271,7 +234,6 @@ function DialogueCanvas(){
                 </form>
                 
                 <Outlet/>
-        
         </div>)
 }
 

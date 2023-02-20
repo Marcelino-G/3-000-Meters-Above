@@ -1,15 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import Reset from "./Reset";
 
 function ErrorPage(){
-
-
-    const navigate = useNavigate();
-
-    const resetGame = () => {
-        sessionStorage.clear();
-        navigate("/")
-      }
-
 
 return(<div>
     <h1>
@@ -18,15 +9,8 @@ return(<div>
     <p>
         I Am ErRoR... embarrassing...
     </p>
-    <button onClick={resetGame} >
-        reset
-    </button>
+    <Reset/>
 </div>)
-
-
-
-
-
 }
 
 export default ErrorPage;

@@ -1,13 +1,11 @@
-import { useEffect, useRef } from "react"
-
+import { useEffect, useRef, useState } from "react"
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function BattlefielCanvas(props) {
 
     const navigate = useNavigate();
-
-    class Player {
+    class MainPlayer {
         constructor(x, y, width, height){
             this.x = x;
             this.y = y;
@@ -18,13 +16,11 @@ function BattlefielCanvas(props) {
             this.vyu = 0;
             this.vyd = 0;
         }
-
         draw(color, context){
             this.ctx = context;
             this.ctx.fillStyle = color;
             this.ctx.fillRect(this.x, this.y, this.width, this.height);
         }
-
         updatePosition(){
             if(this.x <= 5){
                 this.x += 2;
@@ -44,57 +40,32 @@ function BattlefielCanvas(props) {
             this.y += this.vyu;
             this.y += this.vyd;
 
-            
-
             if (this.y < 15){
-                
-                
                 navigate('/')
-                
-                
             }
-        }
-
-        enemyPosition(x){
-            this.y += x;
         }
 
         crash(enemy){
             //bottom right
-            if(this.x > enemy.x && this.x < enemy.x + 59 && this.y > enemy.y && this.y < enemy.y + 59){
-                
-                
-                console.log(myPlayer)
-                
+            if(this.x > enemy.x && this.x < enemy.x + 55 && this.y > enemy.y && this.y < enemy.y + 55){
+                return true
             } 
             //top left
-            if(this.x < enemy.x && this.x > enemy.x - 59 && this.y < enemy.y && this.y > enemy.y - 59){
-                
-                
-                console.log(myPlayer)
-                
+            if(this.x < enemy.x && this.x > enemy.x - 40 && this.y < enemy.y && this.y > enemy.y - 40){
+                return true
             } 
             //top right
-            if(this.x > enemy.x && this.x < enemy.x + 59 && this.y < enemy.y && this.y > enemy.y - 59){
-               
-                
-                console.log(myPlayer)
-                
+            if(this.x > enemy.x && this.x < enemy.x + 55 && this.y < enemy.y && this.y > enemy.y - 55){
+                return true
             } 
             //bottom left
-            if(this.x < enemy.x && this.x > enemy.x - 59 && this.y > enemy.y && this.y < enemy.y + 59){
-                
-                
-                console.log(myPlayer)
-                
+            if(this.x < enemy.x && this.x > enemy.x - 40 && this.y > enemy.y && this.y < enemy.y + 40){
+                return true
             } 
         }
     }
 
-
-
     const canvasRef = useRef();
-   
     let canvasContext;
     let myPlayer;
 
@@ -103,74 +74,44 @@ function BattlefielCanvas(props) {
         myGameArea.updatingGame();
     },[])
 
-    
-  
-
-    
-
     const myGameArea = {
         start: function() {
             canvasContext = canvasRef.current.getContext("2d");
-            myPlayer = new Player(590,555,35,35)
-
-            // for(let i =0; i < props.enemies.length; i++){
-            
-            //     props.enemies[i].enemyPosition(Math.floor(Math.random() * (13-3+1) + 3));
-            // }
-            console.log(props.enemies)
-
-       
+            myPlayer = new MainPlayer(590,555,35,35)
         },
         updatingGame: function(){
-            
-            
-            
             updateGameArea();
-            
         },
         clearCanvas: function(){
             canvasContext.clearRect(0,0,canvasRef.current.width,canvasRef.current.height);
         },
     }
 
-    let switchh = false; 
-    
-
     const updateGameArea = () => {
         myGameArea.clearCanvas();
         myPlayer.updatePosition();
-        
-
-        
-
         myPlayer.draw("blue", canvasContext);
-
-        let req = requestAnimationFrame(updateGameArea)
+        let animationReq = requestAnimationFrame(updateGameArea)
 
         for(let i =0; i < props.enemies.length; i++){
             
-            // props.enemies[i].enemyPosition(Math.floor(Math.random() * (2-.5+1) + .5));
-            if(props.enemies[i].x > 1200){
-                switchh = !switchh;
-            } else if(props.enemies[i].x < 5){
-                switchh = !switchh
-            }
+            props.enemies[i].xDirection();
 
-
-            if(switchh){
-                props.enemies[i].x -= .45;
+            if(props.enemies[i].switchh){
+                props.enemies[i].x -= 7.5;
             } else {
-                props.enemies[i].x += .45;
+                props.enemies[i].x += 7.5;
             }
 
-
-            props.enemies[i].y += .15;
-            // props.enemies[i].x += .25;
+            props.enemies[i].y += .10;
             props.enemies[i].draw('red',canvasContext)
             
-
             if(myPlayer.crash(props.enemies[i])){
-                cancelAnimationFrame(req)
+                cancelAnimationFrame(animationReq)
+                
+                if(props.chapter === 5){
+                    navigate('/youlose')
+                }
             }
         }
     }
@@ -178,18 +119,16 @@ function BattlefielCanvas(props) {
     document.addEventListener("keydown", (e) => {
         
         if (e.key === "d"){
-            myPlayer.vxr = 5;
-            
+            myPlayer.vxr = 2.5;
         }
         if(e.key === "a"){
-            myPlayer.vxl = -5;
-            
+            myPlayer.vxl = -2.5;
         }
         if (e.key === "w"){
-            myPlayer.vyu = -5;
+            myPlayer.vyu = -2.5;
         }
         if (e.key === "s"){
-            myPlayer.vyd = 5;
+            myPlayer.vyd = 2.5;
         }
     })
 
@@ -209,14 +148,11 @@ function BattlefielCanvas(props) {
         }
     })
 
-    
-
     return (
         <div id='battlefieldHolder'>
             <canvas width={1250} height={625} ref={canvasRef}></canvas>
         </div>
     );
-    
 }
 
 export default BattlefielCanvas;

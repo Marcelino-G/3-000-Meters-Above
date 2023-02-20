@@ -19,6 +19,7 @@
         background-color: #7DB9B6;
         border: solid black 3px;
         font-weight: bold;
+        cursor: pointer;
     }
     #textInput{
         display: none;
@@ -29,10 +30,13 @@
     form{
         text-align: center;
         label{
-            color: #F5E9CF
+            color: #F5E9CF;
+            cursor: pointer;
+            
         }
         input{
             font-weight: bold;
+            cursor: pointer;
         }
     }
 }
@@ -41,37 +45,23 @@
     color: #F5E9CF;
     border: solid #E96479 5px;
     background-color: #4D455D;
-    
     header{
         text-align: center;
-        
         margin: 0 auto;
     }
     #controls{
         list-style: none;
-        
         margin: 0;
         padding: .5rem
     }
 }
 
 #battlefieldHolder{
-    
     canvas{
-        
         width: 98%;
         margin: .5rem;
         background-color: #7DB9B6;
     }
 }
-
-
-// canvas{
-//     background-color: pink;
-//     margin: 0 auto;
-// }
-
-
-
 
 

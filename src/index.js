@@ -1,13 +1,16 @@
-import React, { Children } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss"
-import DialogueCanvas from "./DialogueCanvas"
-import ErrorPage from './ErrorPage';
+
 import { createBrowserRouter,
-RouterProvider } from 'react-router-dom';
+  RouterProvider } from 'react-router-dom';
+import DialogueCanvas from "./DialogueCanvas"
+import Game from './App';
+import YouLose from './YouLose';
+import ErrorPage from './ErrorPage';
 
 const router = createBrowserRouter([
 
@@ -17,8 +20,13 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage/>
   },
   {
-    path: "s",
-    element: <App/>,
+    path: "game",
+    element: <Game/>,
+    errorElement: <ErrorPage/>
+  },
+  {
+    path: "/youlose",
+    element: <YouLose/>,
     errorElement: <ErrorPage/>
   }
 ])
@@ -26,9 +34,6 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    {/* <DialogueCanvas/> */}
-    {/* <App />
-    <BattlefielCanvas/> */}
     <RouterProvider router={router} />
   </React.StrictMode>
 );

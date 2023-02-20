@@ -7,21 +7,13 @@ function Reset (){
     const resetGame = () => {
         sessionStorage.clear();
         navigate("/")
-        console.log('sas')
       }
 
-
-      return(<div>
-
-        <button onClick={resetGame} >
+      return(<div className='col-1'>
+        <button className="p-1" onClick={resetGame} >
             Reset
           </button>
-
       </div>)
-
-
-
-
 }
 
 export default Reset;
